@@ -24,8 +24,15 @@ major="$(sw_vers -productVersion | cut -d. -f1)"
 [ "$major" -ge 15 ] || { echo "error: needs macOS 15+, found $(sw_vers -productVersion)" >&2; exit 1; }
 
 if [ -d "$SRC/.git" ]; then
-  printf 'update %s\n' "$SRC"
-  git -C "$SRC" pull --ff-only
+  # A local patch in the clone must not abort the install: --ff-only refuses to
+  # run against a dirty tree, and `set -e` would take the whole script with it.
+  # Skip the pull and build what is there instead.
+  if [ -n "$(git -C "$SRC" status --porcelain)" ]; then
+    printf 'skip   pull (%s has local changes) — building as-is\n' "$SRC"
+  else
+    printf 'update %s\n' "$SRC"
+    git -C "$SRC" pull --ff-only
+  fi
 else
   printf 'clone  %s\n' "$SRC"
   mkdir -p "$(dirname "$SRC")"
