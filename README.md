@@ -58,6 +58,13 @@ Two things fix it, both already in this repo:
 
 Existing panes keep their unproxied shell — open a new one to pick it up.
 
+On a brand-new machine `~/.config/ghost-complete/shell/init.zsh` doesn't exist
+yet, so `ghost-complete install` has to run once to generate it. That also
+rewrites the managed block in `~/.zshrc` — which `bootstrap.sh` has symlinked
+to `zsh/zshrc` — replacing `$HOME` with absolute paths. The `HERDR_PANE_ID`
+block is outside the managed markers and survives. Once `init.zsh` exists,
+`git checkout zsh/zshrc` restores the portable form and everything still works.
+
 ## Post-install
 
 - `gh auth login`
