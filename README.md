@@ -43,20 +43,42 @@ gitignored:
 
 ## ghost-complete inside herdr
 
-herdr spawns its pane shells itself, so they carry no `TERM_PROGRAM`.
-ghost-complete's own init block only starts its PTY proxy in a terminal it
-recognises, so panes get a plain shell with no autocomplete — while Ghostty
-tabs work fine.
+ghost-complete has two halves, and both must load for a pane to get
+autocomplete:
 
-Two things fix it, both already in this repo:
+1. The **initialize** block at the top of `zsh/zshrc`, which `exec`s the PTY
+   proxy. `init.zsh` only does this in a terminal it recognises.
+2. The **shell integration** block near the bottom of `zsh/zshrc`, which
+   sources `ghost-complete.zsh` — the precmd/preexec hooks that emit OSC
+   133/7771 prompt boundaries and OSC 7 cwd. Without it the proxy is running
+   but has no idea where the prompt is, and `ghost-complete doctor` reports
+   `missing shell-integration managed block`.
 
-1. `[experimental] multi_terminal = true` in `ghost-complete/config.toml`,
-   without which the binary refuses to start in an unrecognised terminal.
-2. The `HERDR_PANE_ID` block in `zsh/zshrc`, which starts the proxy itself.
-   It sits outside the `ghost-complete install`-managed markers, so upgrades
-   won't clobber it.
+Under herdr 0.8.2 panes inherit `TERM_PROGRAM=ghostty` from the Ghostty session
+that launched herdr, so `init.zsh` recognises the terminal on its own and step 1
+needs no help. That is not guaranteed — start herdr from a context without
+`TERM_PROGRAM` (launchd, ssh) and panes fall back to a plain shell. Two things
+in this repo cover that case:
 
-Existing panes keep their unproxied shell — open a new one to pick it up.
+- `[experimental] multi_terminal = true` in `ghost-complete/config.toml`,
+  without which the binary refuses to start in an unrecognised terminal.
+- The `HERDR_PANE_ID` block in `zsh/zshrc`, which starts the proxy itself when
+  `init.zsh` declined to. It sits outside the `ghost-complete install`-managed
+  markers, so upgrades won't clobber it, and its `GHOST_COMPLETE_ACTIVE` guard
+  keeps it from stacking a second proxy when `init.zsh` already started one.
+
+Both managed blocks use `$HOME` rather than the absolute paths `ghost-complete
+install` emits, because that command also rewrites `~/.zshrc` as a regular file
+and breaks the dotfiles symlink. The cost is a false negative: `doctor` reads
+these paths as literal strings and expands neither `$HOME`, `${HOME}` nor `~`,
+so it reports the init script as missing. zsh expands it correctly at source
+time. Verify the integration by checking the hooks are live instead:
+
+```sh
+zsh -i -c 'echo $precmd_functions'   # expect: _gc_precmd _gc_osc7_precmd
+```
+
+Existing panes keep their old shell — open a new one to pick up changes.
 
 ## Post-install
 
