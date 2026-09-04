@@ -1,0 +1,8 @@
+{
+  "recordings_dir": "~/Recordings",
+  "transcription": {
+    "enabled": true,
+    "engine": "parakeet"
+  },
+  "mic_voice_processing": false
+}

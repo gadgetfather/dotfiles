@@ -30,6 +30,7 @@ finds to `<name>.pre-dotfiles`. It's safe to re-run.
 | `ghost-complete/config.toml` | `~/.config/ghost-complete/config.toml` | catppuccin theme, `multi_terminal` |
 | `aerospace/aerospace.toml` | `~/.aerospace.toml` | tiling layout and ALT-based bindings |
 | `claude/settings.json` | `~/.claude/settings.json` | model, notification hooks, plugin marketplaces |
+| `quill/config.json` | `~/.config/quill/config.json` | recordings dir, on-device transcription |
 
 ## Machine-local escape hatches
 
@@ -57,6 +58,33 @@ Two things fix it, both already in this repo:
    won't clobber it.
 
 Existing panes keep their unproxied shell — open a new one to pick it up.
+
+## quill
+
+[quill](https://github.com/digimata/quill) is a local meeting recorder and
+transcriber. It is not in Homebrew — upstream ships no tap and no release
+binaries — so it is a source build rather than a `Brewfile` line:
+
+```sh
+./quill/install.sh
+```
+
+Clone, `swift build -c release`, install to `~/.local/bin`, register the
+launch-at-login LaunchAgent. Safe to re-run; it pulls an existing clone instead
+of re-cloning. `QUILL_SRC` and `QUILL_BIN_DIR` override the paths.
+
+It stays out of `bootstrap.sh` on purpose: that script only makes symlinks and
+has to stay fast and re-runnable, while a Swift release build takes ~2 minutes.
+
+Two things worth knowing, both already handled by the script:
+
+- `quill install --launch-at-login` hardcodes `/usr/local/bin/quill` and only
+  falls back to the running binary when `argv[0]` is an absolute path. Invoke
+  it as `~/.local/bin/quill install --launch-at-login`, never as a bare `quill`
+  off `PATH`, or it exits with "couldn't locate the quill binary".
+- `quill doctor` cannot verify System Audio Recording ahead of time, and
+  reports the ~600 MB Parakeet models missing until the first transcription.
+  Record a throwaway session while online before you need it.
 
 ## Post-install
 
