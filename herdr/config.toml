@@ -1,0 +1,119 @@
+# herdr configuration — tuned for running many Claude Code sessions
+# Docs: https://herdr.dev/docs/    Reload after edits: herdr server reload-config
+# See all defaults: herdr --default-config
+
+onboarding = false
+
+[theme]
+name = "catppuccin"
+# Follow Ghostty's light/dark appearance automatically.
+auto_switch = true
+dark_name = "catppuccin"
+light_name = "catppuccin-latte"
+
+[terminal]
+shell_mode = "auto"
+# New panes/tabs inherit the cwd of the pane you split from, so a new pane in a
+# project workspace is already in that repo.
+new_cwd = "follow"
+
+[keys]
+# AeroSpace now uses ALT as its primary modifier, so ctrl is free again.
+# ctrl+b (herdr's default) is still avoided: Claude Code uses Ctrl+B to background
+# a Bash task, and sharing it means pressing it twice inside every Claude pane.
+# ctrl+g is unbound in AeroSpace, the shell, and Claude Code.
+prefix = "ctrl+g"
+
+# --- workspaces (one per repo) ---
+new_workspace     = "prefix+shift+n"
+workspace_picker  = "prefix+w"
+rename_workspace  = "prefix+shift+w"
+close_workspace   = "prefix+shift+d"
+previous_workspace = "prefix+shift+k"
+next_workspace     = "prefix+shift+j"
+switch_workspace   = "prefix+shift+1..9"
+
+# --- agents (jump straight to the Claude session that needs you) ---
+previous_agent = "prefix+["
+next_agent     = "prefix+]"
+focus_agent    = ""   # alt+1..9 is AeroSpace workspaces; use prefix+[ / prefix+]
+
+# --- git worktrees (parallel Claude sessions on one repo) ---
+new_worktree    = "prefix+shift+g"
+open_worktree   = "prefix+shift+o"
+remove_worktree = "prefix+shift+r"
+
+# --- tabs ---
+new_tab      = "prefix+c"
+rename_tab   = "prefix+shift+t"
+previous_tab = "prefix+p"
+next_tab     = "prefix+n"
+switch_tab   = "prefix+1..9"
+close_tab    = "prefix+shift+x"
+
+# --- panes (vim-style focus) ---
+focus_pane_left  = "prefix+h"
+focus_pane_down  = "prefix+j"
+focus_pane_up    = "prefix+k"
+focus_pane_right = "prefix+l"
+split_vertical   = "prefix+v"
+split_horizontal = "prefix+minus"
+close_pane       = "prefix+x"
+zoom             = "prefix+z"
+last_pane        = "prefix+tab"
+resize_mode      = "prefix+r"
+rename_pane      = "prefix+shift+p"
+
+# --- session ---
+detach                   = "prefix+q"
+help                     = "prefix+?"
+settings                 = "prefix+s"
+reload_config            = "prefix+shift+comma"
+toggle_sidebar           = "prefix+b"
+open_notification_target = "prefix+o"
+edit_scrollback          = "prefix+e"
+
+# Popup: git status/log for the focused pane's repo, without disturbing layout.
+[[keys.command]]
+key = "prefix+g"
+type = "popup"
+command = "git status --short --branch && echo && git log --oneline --graph -15 && echo && read -n 1 -s -r -p 'any key to close'"
+width = "80%"
+height = "70%"
+
+[ui]
+# THE setting for your use case: sort the agent sidebar as an attention queue,
+# so blocked Claude sessions float to the top instead of sitting in repo order.
+agent_panel_sort = "priority"
+
+# Distinct glyphs per state (blocked/working/done/idle) rather than colour-only
+# dots — readable at a glance and colourblind-safe.
+status_indicators = "symbols"
+
+# Label each split with its detected agent, so you can tell two Claude panes apart.
+show_agent_labels_on_pane_borders = true
+
+sidebar_width = 30
+sidebar_max_width = 40
+confirm_close = true
+prompt_new_tab_name = false
+prompt_new_workspace_name = true
+hide_tab_bar_when_single_tab = true
+
+# Ghostty tab/window title shows which repo you're in.
+window_title = "herdr — {workspace}"
+
+
+# Sidebar agent rows. Claude Code writes its current task into the terminal
+# title, so rendering terminal_title_stripped turns each sidebar entry into a
+# live summary of what that session is doing, instead of just "claude".
+# Widen sidebar_width above if the titles are getting clipped.
+[ui.sidebar.agents]
+rows = [["state_icon", "workspace", "tab"], ["agent"]]
+
+[ui.sidebar.agents.rows_by_agent]
+claude = [
+  ["state_icon", "workspace", "tab"],
+  ["terminal_title_stripped"],
+  ["agent"],
+]

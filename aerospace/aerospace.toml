@@ -1,0 +1,231 @@
+# Place a copy of this config to ~/.aerospace.toml
+# After that, you can edit ~/.aerospace.toml to your liking
+
+# You can use it to add commands that run after AeroSpace startup.
+# Available commands : https://nikitabobko.github.io/AeroSpace/commands
+after-startup-command = []
+
+# Start AeroSpace at login
+start-at-login = true
+
+# Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# See: https://nikitabobko.github.io/AeroSpace/guide#layouts
+# The 'accordion-padding' specifies the size of accordion padding
+# You can set 0 to disable the padding feature
+accordion-padding = 30
+
+# Possible values: tiles|accordion
+default-root-container-layout = 'tiles'
+
+# Possible values: horizontal|vertical|auto
+# 'auto' means: wide monitor (anything wider than high) gets horizontal orientation,
+#               tall monitor (anything higher than wide) gets vertical orientation
+default-root-container-orientation = 'auto'
+
+# Mouse follows focus when focused monitor changes
+# Drop it from your config, if you don't like this behavior
+# See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
+# See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
+# Fallback value (if you omit the key): on-focused-monitor-changed = []
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
+# Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
+# Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
+automatically-unhide-macos-hidden-apps = false
+
+# Possible values: (qwerty|dvorak|colemak)
+# See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
+[key-mapping]
+    preset = 'qwerty'
+
+# Gaps between windows (inner-*) and between monitor edges (outer-*).
+# Possible values:
+# - Constant:     gaps.outer.top = 8
+# - Per monitor:  gaps.outer.top = [{ monitor.main = 16 }, { monitor."some-pattern" = 32 }, 24]
+#                 In this example, 24 is a default value when there is no match.
+#                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
+#                 See:
+#                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
+[gaps]
+    inner.horizontal = 0
+    inner.vertical   = 0
+    outer.left       = 0
+    outer.bottom     = 0
+    outer.top        = 0
+    outer.right      = 0
+
+# 'main' binding mode declaration
+# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+# 'main' binding mode must be always presented
+# NOTE: Primary modifier is ALT (AeroSpace upstream default).
+# It was briefly swapped to CTRL, but AeroSpace grabs hotkeys globally and that
+# stole ctrl-a/e/w/u/k/p/n/b/f/l from the shell and from Claude Code
+# (ctrl-b = background task, ctrl-v = paste image). ALT keeps those free.
+[mode.main.binding]
+
+    # Layout toggles
+    alt-slash = 'layout tiles horizontal vertical'
+    alt-comma = 'layout accordion horizontal vertical'
+
+    # Focus
+    alt-h = 'focus left'
+    alt-j = 'focus down'
+    alt-k = 'focus up'
+    alt-l = 'focus right'
+
+    # Move
+    alt-shift-h = 'move left'
+    alt-shift-j = 'move down'
+    alt-shift-k = 'move up'
+    alt-shift-l = 'move right'
+
+    # Resize
+    alt-minus = 'resize smart -50'
+    alt-equal = 'resize smart +50'
+
+    # Workspaces — numbers
+    alt-1 = 'workspace 1'
+    alt-2 = 'workspace 2'
+    alt-3 = 'workspace 3'
+    alt-4 = 'workspace 4'
+    alt-5 = 'workspace 5'
+    alt-6 = 'workspace 6'
+    alt-7 = 'workspace 7'
+    alt-8 = 'workspace 8'
+    alt-9 = 'workspace 9'
+    alt-0 = 'workspace 10'
+
+    # Workspaces — letters (hybrid approach: keep all, with key anchors noted)
+    alt-a = 'workspace A'
+    alt-b = 'workspace B' # Browser (Chrome)
+
+
+    alt-e = 'workspace E' # Editor (VSCode)
+    alt-f = 'workspace F'
+    alt-g = 'workspace G'
+    alt-i = 'workspace I'
+    alt-m = 'workspace M' # Mail/Meet
+    alt-n = 'workspace N'
+
+    alt-p = 'workspace P'
+    alt-q = 'workspace Q'
+
+    alt-s = 'workspace S' # Slack
+    alt-t = 'workspace T' # Terminal
+    alt-u = 'workspace U'
+    alt-v = 'workspace V'
+    alt-w = 'workspace W'
+    alt-x = 'workspace X'
+    
+
+
+    # Move node to workspace — numbers
+    alt-shift-1 = 'move-node-to-workspace 1'
+    alt-shift-2 = 'move-node-to-workspace 2'
+    alt-shift-3 = 'move-node-to-workspace 3'
+    alt-shift-4 = 'move-node-to-workspace 4'
+    alt-shift-5 = 'move-node-to-workspace 5'
+    alt-shift-6 = 'move-node-to-workspace 6'
+    alt-shift-7 = 'move-node-to-workspace 7'
+    alt-shift-8 = 'move-node-to-workspace 8'
+    alt-shift-9 = 'move-node-to-workspace 9'
+    alt-shift-0 = 'move-node-to-workspace 10'
+
+    # Move node to workspace — letters
+    alt-shift-a = 'move-node-to-workspace A'
+    alt-shift-b = 'move-node-to-workspace B'
+    alt-shift-c = 'move-node-to-workspace C'
+    alt-shift-d = 'move-node-to-workspace D'
+    alt-shift-e = 'move-node-to-workspace E'
+    alt-shift-f = 'move-node-to-workspace F'
+    alt-shift-g = 'move-node-to-workspace G'
+    alt-shift-i = 'move-node-to-workspace I'
+
+    alt-shift-n = 'move-node-to-workspace N'
+    alt-shift-o = 'move-node-to-workspace O'
+    alt-shift-p = 'move-node-to-workspace P'
+    alt-shift-q = 'move-node-to-workspace Q'
+    alt-shift-r = 'move-node-to-workspace R'
+    alt-shift-s = 'move-node-to-workspace S'
+    alt-shift-t = 'move-node-to-workspace T'
+    alt-shift-u = 'move-node-to-workspace U'
+    alt-shift-v = 'move-node-to-workspace V'
+    alt-shift-w = 'move-node-to-workspace W'
+    alt-shift-x = 'move-node-to-workspace X'
+    alt-shift-y = 'move-node-to-workspace Y'
+    alt-shift-z = 'move-node-to-workspace Z'
+
+    # Back and forth / send workspace to next monitor
+    alt-tab = 'workspace-back-and-forth'
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+    # --- Monitor navigation (2 monitors: LG ULTRAGEAR + Built-in Retina) ---
+    # With exactly two monitors, 'next --wrap-around' is a straight toggle.
+    alt-backtick = 'focus-monitor --wrap-around next'
+    # Throw the focused window to the other screen and follow it there.
+    alt-shift-backtick = 'move-node-to-monitor --wrap-around --focus-follows-window next'
+
+    # Maximize current window (tiling fullscreen)
+    alt-shift-m = 'fullscreen'
+    # If you prefer macOS native fullscreen (green button behavior), use this instead:
+    # ctrl-shift-m = 'macos-native-fullscreen'
+
+    # Enter service mode
+    alt-shift-semicolon = 'mode service'
+
+# 'service' binding mode declaration.
+# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main'] # reset layout
+    f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
+    # s = ['layout sticky tiling', 'mode main']
+
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
+
+    down = 'volume down'
+    up = 'volume up'
+    shift-down = ['volume set 0', 'mode main']
+
+# ------------------------------------------------------------------------------------
+# OPTIONAL: Auto-assign common apps to mnemonic workspaces
+# Uncomment the blocks below to enable automatic placement when a window appears.
+# To find an app's bundle id, run: osascript -e 'id of app "App Name"'
+# ------------------------------------------------------------------------------------
+
+# [[on-window-detected]]
+#     if.app-id = 'com.google.Chrome'
+#     run = 'move-node-to-workspace B'  # B = Browser
+#
+# [[on-window-detected]]
+#     if.app-id = 'com.microsoft.VSCode'
+#     run = 'move-node-to-workspace E'  # E = Editor (VSCode)
+#
+# [[on-window-detected]]
+#     if.app-id = 'com.tinyspeck.slackmacgap'
+#     run = 'move-node-to-workspace S'  # S = Slack
+#
+# [[on-window-detected]]
+#     if.app-id = 'com.apple.Terminal' # replace with your terminal bundle id if different
+#     run = 'move-node-to-workspace T'  # T = Terminal
+#
+# [[on-window-detected]]
+#     if.app-id = 'com.google.Chrome.app.icloud'
+#     run = 'move-node-to-workspace M'  # M = Mail/Meet (adjust app-id for your client)
+
+# ------------------------------------------------------------------------------------
+# Always keep Finder floating
+# ------------------------------------------------------------------------------------
+[[on-window-detected]]
+    if.app-id = 'com.apple.finder'
+    run = 'layout floating'

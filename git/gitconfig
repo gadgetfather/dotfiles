@@ -1,0 +1,18 @@
+# Identity is deliberately absent so this file is machine-agnostic.
+# Put it in ~/.gitconfig.local, which bootstrap.sh scaffolds:
+#     [user]
+#         name  = your-handle
+#         email = you@example.com
+[include]
+	path = ~/.gitconfig.local
+
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+# Rewrite SSH remotes to HTTPS so the gh credential helper serves them.
+[url "https://github.com/"]
+	insteadOf = git@github.com:

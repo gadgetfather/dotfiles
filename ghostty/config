@@ -1,0 +1,14 @@
+# Ghostty config
+
+# Make the LEFT Option key send Alt, so readline word-motions work in the shell
+# and in Claude Code: alt-d (delete word forward), alt-backspace, alt-. (yank
+# last argument). The RIGHT Option key is untouched, so you can still type
+# é, ü, — and friends.
+#
+# Caveat: AeroSpace owns alt as its primary modifier and grabs hotkeys globally,
+# so alt-b and alt-f (readline word-back / word-forward) go to AeroSpace
+# workspaces B and F instead of the terminal. alt-d and alt-. are unbound in
+# AeroSpace and do reach the shell.
+#
+# Delete this line to restore stock macOS Option behaviour on both keys.
+macos-option-as-alt = left
