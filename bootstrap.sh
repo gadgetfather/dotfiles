@@ -30,6 +30,7 @@ link herdr/shell.zsh           .config/herdr/shell.zsh
 link ghost-complete/config.toml .config/ghost-complete/config.toml
 link aerospace/aerospace.toml  .aerospace.toml
 link claude/settings.json      .claude/settings.json
+link quill/config.json         .config/quill/config.json
 
 # Git identity is per-machine and never committed.
 if [ ! -f "$HOME/.gitconfig.local" ]; then
@@ -56,4 +57,5 @@ Done. Remaining manual steps:
   3. herdr integration install claude # regenerates ~/.claude/hooks/herdr-agent-state.sh
   4. gh auth login
   5. fill in ~/.gitconfig.local
+  6. ./quill/install.sh              # builds quill from source (~2 min)
 NEXT
