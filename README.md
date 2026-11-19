@@ -25,11 +25,12 @@ finds to `<name>.pre-dotfiles`. It's safe to re-run.
 | `zsh/zprofile` | `~/.zprofile` | Homebrew shellenv, OrbStack |
 | `git/gitconfig` | `~/.gitconfig` | `gh` credential helper, SSH→HTTPS rewrite |
 | `ghostty/config` | `~/.config/ghostty/config` | left Option sends Alt, so readline word-motions work |
-| `herdr/config.toml` | `~/.config/herdr/config.toml` | `ctrl+g` prefix, agent sidebar sorted as an attention queue |
+| `herdr/config.toml` | `~/.config/herdr/config.toml` | `ctrl+g` prefix, agent sidebar sorted as an attention queue, coloured blocked/done labels |
 | `herdr/shell.zsh` | `~/.config/herdr/shell.zsh` | `hd` / `hdc` / `hdl` repo-workspace helpers, fzf bindings |
 | `ghost-complete/config.toml` | `~/.config/ghost-complete/config.toml` | catppuccin theme, `multi_terminal` |
 | `aerospace/aerospace.toml` | `~/.aerospace.toml` | tiling layout and ALT-based bindings |
 | `claude/settings.json` | `~/.claude/settings.json` | model, notification hooks, plugin marketplaces |
+| `claude/hooks/notify.py` | `~/.claude/hooks/notify.py` | Stop/Notification alerts naming the herdr workspace, tab and session |
 
 ## Machine-local escape hatches
 
@@ -64,6 +65,27 @@ rewrites the managed block in `~/.zshrc` — which `bootstrap.sh` has symlinked
 to `zsh/zshrc` — replacing `$HOME` with absolute paths. The `HERDR_PANE_ID`
 block is outside the managed markers and survives. Once `init.zsh` exists,
 `git checkout zsh/zshrc` restores the portable form and everything still works.
+
+## Notifications
+
+`claude/hooks/notify.py` posts through `terminal-notifier`: the title names the
+herdr workspace and tab, and clicking it brings Ghostty forward and runs
+`herdr tab focus` on that session. If terminal-notifier is missing or blocked
+it falls back to a plain `osascript` notification.
+
+macOS may block terminal-notifier silently on first use. To get the Allow
+prompt back:
+
+```sh
+tccutil reset UserNotification fr.julienxx.oss.terminal-notifier
+```
+
+## herdr: don't use `brew services`
+
+Let the `herdr` client spawn its own server. If `brew services` starts it via
+launchd (e.g. after a reboot), the sidebar never detects agents —
+`herdr agent list` returns `[]`. Fix with `brew services stop herdr`, then run
+`herdr` (this restarts every pane; Claude sessions resume on restore).
 
 ## Post-install
 

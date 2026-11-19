@@ -3,6 +3,7 @@ tap "stanmarek/tap"
 brew "herdr"                        # terminal workspace manager for agent sessions
 brew "stanmarek/tap/ghost-complete" # terminal-native autocomplete
 brew "fzf"                          # ctrl-r / ctrl-t / alt-c, and the hd repo picker
+brew "terminal-notifier"           # clickable Claude notifications (claude/hooks/notify.py)
 brew "gh"                           # also the git credential helper
 brew "btop"
 brew "bun"

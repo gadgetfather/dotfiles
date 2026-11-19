@@ -30,6 +30,7 @@ link herdr/shell.zsh           .config/herdr/shell.zsh
 link ghost-complete/config.toml .config/ghost-complete/config.toml
 link aerospace/aerospace.toml  .aerospace.toml
 link claude/settings.json      .claude/settings.json
+link claude/hooks/notify.py     .claude/hooks/notify.py
 
 # Git identity is per-machine and never committed.
 if [ ! -f "$HOME/.gitconfig.local" ]; then

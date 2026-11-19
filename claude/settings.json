@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"Claude Code has finished executing.\" with title \"Claude Code\" sound name \"Glass\"'",
+            "command": "python3 \"$HOME/.claude/hooks/notify.py\"",
             "timeout": 10
           }
         ]
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"Claude Code needs your input.\" with title \"Claude Code\" sound name \"Ping\"'",
+            "command": "python3 \"$HOME/.claude/hooks/notify.py\"",
             "timeout": 10
           }
         ]
@@ -25,11 +25,11 @@
     ],
     "SessionStart": [
       {
-        "matcher": "*",
+        "matcher": "^(startup|resume|clear|compact|fork)$",
         "hooks": [
           {
             "type": "command",
-            "command": "bash '$HOME/.claude/hooks/herdr-agent-state.sh' session",
+            "command": "bash \"$HOME/.claude/hooks/herdr-agent-state.sh\" session",
             "timeout": 10
           }
         ]
