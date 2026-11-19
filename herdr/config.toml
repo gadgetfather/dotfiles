@@ -82,19 +82,21 @@ width = "80%"
 height = "70%"
 
 [ui]
-# THE setting for your use case: sort the agent sidebar as an attention queue,
-# so blocked Claude sessions float to the top instead of sitting in repo order.
+# T3 Code-style sidebar: one flat list of sessions, ordered as an attention
+# queue (blocked first, then done, then working), like T3's thread inbox.
+# Use "spaces" to group by repo instead (T3's "group by project" mode).
 agent_panel_sort = "priority"
 
-# Distinct glyphs per state (blocked/working/done/idle) rather than colour-only
-# dots — readable at a glance and colourblind-safe.
-status_indicators = "symbols"
+# T3 shows a coloured dot plus a status label. The label (state_text, below)
+# carries the meaning, so colour-only dots stay readable for colourblind users.
+status_indicators = "dots"
 
 # Label each split with its detected agent, so you can tell two Claude panes apart.
 show_agent_labels_on_pane_borders = true
 
-sidebar_width = 30
-sidebar_max_width = 40
+# Wider than default so session titles, the headline of each row, fit.
+sidebar_width = 34
+sidebar_max_width = 44
 confirm_close = true
 prompt_new_tab_name = false
 prompt_new_workspace_name = true
@@ -104,16 +106,32 @@ hide_tab_bar_when_single_tab = true
 window_title = "herdr — {workspace}"
 
 
-# Sidebar agent rows. Claude Code writes its current task into the terminal
-# title, so rendering terminal_title_stripped turns each sidebar entry into a
-# live summary of what that session is doing, instead of just "claude".
-# Widen sidebar_width above if the titles are getting clipped.
+# Sidebar rows, modelled on T3 Code's thread rows:
+#   line 1  ● session title            (the thread title, bold)
+#   line 2  status · repo · tab         (status pill colour, the rest muted)
+# Claude Code writes its current task into the terminal title, so
+# terminal_title_stripped is a live title for each session.
+# Status colours follow T3: blocked = amber (needs approval/input),
+# working = sky, done = green, idle shows no label. Catppuccin Latte accents
+# are used because they stay readable on both the latte and mocha themes.
+# state_text rules need herdr >= 0.9.5; 0.9.0 rejects the whole file.
 [ui.sidebar.agents]
-rows = [["state_icon", "workspace", "tab"], ["agent"]]
+row_gap = 1
+rows = [
+  ["state_icon", { token = "agent", bold = true }],
+  [{ token = "state_text", rules = [{ equals = "blocked", fg = "#df8e1d", bold = true }, { equals = "working", fg = "#04a5e5" }, { equals = "done", fg = "#40a02b", bold = true }, { equals = "idle", hide = true }] }, { token = "workspace", dim = true }, { token = "tab", dim = true }],
+]
 
 [ui.sidebar.agents.rows_by_agent]
 claude = [
-  ["state_icon", { token = "state_text", rules = [{ equals = "blocked", fg = "#f38ba8", bold = true }, { equals = "done", fg = "#94e2d5", bold = true }, { equals = "idle", hide = true }] }, "workspace", "tab"],
-  ["terminal_title_stripped"],
-  ["agent"],
+  ["state_icon", { token = "terminal_title_stripped", bold = true }],
+  [{ token = "state_text", rules = [{ equals = "blocked", fg = "#df8e1d", bold = true }, { equals = "working", fg = "#04a5e5" }, { equals = "done", fg = "#40a02b", bold = true }, { equals = "idle", hide = true }] }, { token = "workspace", dim = true }, { token = "tab", dim = true }],
 ]
+
+# Repo rows, like T3's project folders: name in bold, branch and git status muted.
+[ui.sidebar.spaces]
+rows = [["state_icon", { token = "workspace", bold = true }], [{ token = "branch", dim = true }, { token = "git_status", dim = true }]]
+
+[experimental]
+# Allow launching herdr from inside a herdr-managed pane (nested herdr).
+allow_nested = true

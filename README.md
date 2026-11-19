@@ -25,7 +25,7 @@ finds to `<name>.pre-dotfiles`. It's safe to re-run.
 | `zsh/zprofile` | `~/.zprofile` | Homebrew shellenv, OrbStack |
 | `git/gitconfig` | `~/.gitconfig` | `gh` credential helper, SSH→HTTPS rewrite |
 | `ghostty/config` | `~/.config/ghostty/config` | left Option sends Alt, so readline word-motions work |
-| `herdr/config.toml` | `~/.config/herdr/config.toml` | `ctrl+g` prefix, agent sidebar sorted as an attention queue, coloured blocked/done labels |
+| `herdr/config.toml` | `~/.config/herdr/config.toml` | `ctrl+g` prefix, T3 Code-style agent sidebar (title-first rows, coloured status, attention-queue order); needs herdr >= 0.9.5 |
 | `herdr/shell.zsh` | `~/.config/herdr/shell.zsh` | `hd` / `hdc` / `hdl` repo-workspace helpers, fzf bindings |
 | `ghost-complete/config.toml` | `~/.config/ghost-complete/config.toml` | catppuccin theme, `multi_terminal` |
 | `aerospace/aerospace.toml` | `~/.aerospace.toml` | tiling layout and ALT-based bindings |
