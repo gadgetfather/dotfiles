@@ -95,11 +95,16 @@ herdr workspace and tab, and clicking it brings Ghostty forward and runs
 `herdr tab focus` on that session. If terminal-notifier is missing or blocked
 it falls back to a plain `osascript` notification.
 
-macOS may block terminal-notifier silently on first use. To get the Allow
-prompt back:
+macOS may block terminal-notifier silently on first use: it never appears in
+System Settings → Notifications, `terminal-notifier` exits 3 with "Notifications
+are not allowed for this application", and clicks open Script Editor (the
+fallback). `tccutil reset` fails on recent macOS. Instead, register the
+ad-hoc-signed app and launch it once through LaunchServices, then click Allow:
 
 ```sh
-tccutil reset UserNotification fr.julienxx.oss.terminal-notifier
+APP="$(brew --prefix terminal-notifier)/terminal-notifier.app"
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$APP"
+open -n "$APP" --args -title test -message "Allow notifications"
 ```
 
 ## herdr: don't use `brew services`
