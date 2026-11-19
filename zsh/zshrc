@@ -46,3 +46,15 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Installers (Kiro, endpoint security, VPN clients) append to ~/.zshrc; point
 # them here instead so this file stays portable.
 [ -r "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+
+# ghost-complete 0.19 also wants this second block, sourced late. `ghost-complete
+# install` writes it with an absolute path AND replaces this file with a regular
+# one, breaking the dotfiles symlink -- so re-link after ever running it.
+# $HOME is used here to keep the file portable. Trade-off: `ghost-complete
+# doctor` reads this path as a literal string without expanding it, so it
+# reports the init script missing. That warning is a false negative; zsh
+# expands $HOME correctly at source time and the integration works.
+# >>> ghost-complete shell integration >>>
+# !! Contents within this block are managed by 'ghost-complete install' !!
+source "$HOME/.config/ghost-complete/shell/ghost-complete.zsh"
+# <<< ghost-complete shell integration <<<
