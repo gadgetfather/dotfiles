@@ -128,9 +128,16 @@ claude = [
   [{ token = "state_text", rules = [{ equals = "blocked", fg = "#df8e1d", bold = true }, { equals = "working", fg = "#04a5e5" }, { equals = "done", fg = "#40a02b", bold = true }, { equals = "idle", hide = true }] }, { token = "workspace", dim = true }, { token = "tab", dim = true }],
 ]
 
-# Repo rows, like T3's project folders: name in bold, branch and git status muted.
+# Repo rows, like T3's project folders:
+#   line 1  ● repo name   status      (name bold, status in the same T3 colours)
+#   line 2  branch  git status        (muted)
+# A repo's status rolls up its sessions, so "blocked" flags a repo that needs you.
 [ui.sidebar.spaces]
-rows = [["state_icon", { token = "workspace", bold = true }], [{ token = "branch", dim = true }, { token = "git_status", dim = true }]]
+row_gap = 1
+rows = [
+  ["state_icon", { token = "workspace", bold = true }, { token = "state_text", rules = [{ equals = "blocked", fg = "#df8e1d", bold = true }, { equals = "working", fg = "#04a5e5" }, { equals = "done", fg = "#40a02b", bold = true }, { equals = "idle", hide = true }] }],
+  [{ token = "branch", dim = true }, { token = "git_status", dim = true }],
+]
 
 [experimental]
 # Allow launching herdr from inside a herdr-managed pane (nested herdr).
