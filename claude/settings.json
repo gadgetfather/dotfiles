@@ -40,7 +40,11 @@
     "claude-mem@thedotmack": false,
     "agent-skills@addy-agent-skills": true,
     "mcp-apps@mcp-apps": true,
-    "swift-lsp@claude-plugins-official": true
+    "swift-lsp@claude-plugins-official": true,
+    "figma@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "x-skills@x-skills": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "addy-agent-skills": {
@@ -54,9 +58,16 @@
         "source": "github",
         "repo": "modelcontextprotocol/ext-apps"
       }
+    },
+    "x-skills": {
+      "source": {
+        "source": "github",
+        "repo": "sergebulaev/x-skills"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
   "tui": "default",
+  "switchModelsOnFlag": false,
   "agentPushNotifEnabled": true
 }
